@@ -12,7 +12,7 @@ export class BlogController {
     return this.blogService.getAllBlogs();
   }
 
-  @Get('/getbyid/:id')
+  @Get('getbyid/:id')
   async getBlogById(@Param('id') id: string): Promise<IBlog | null> {
     return this.blogService.getBlogById(id);
   }
