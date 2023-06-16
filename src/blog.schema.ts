@@ -16,7 +16,7 @@ export interface IBlog extends Document {
   title: { type: String, required: true },
   description: { type: String, required: true },
   content: { type: String, required: true },
-  blog_date: { type: Date},
+  blog_date: { type: Date, required: true},
   meta_title: { type: String, required: true },
   meta_desc: { type: String, required: true },
   meta_keyword: { type: String, required: true },
