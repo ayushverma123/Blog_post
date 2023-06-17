@@ -1,4 +1,6 @@
-import { Controller, Get, Post, Put, Delete, Param, Body } from '@nestjs/common';
+import { Multer } from 'multer';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { Controller, Get, Post, Put, Delete, Param, Body, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { BlogService } from './blog.service';
 import { CreateBlogDto } from './create-blog.dto';
 import { IBlog } from './blog.schema';
@@ -17,10 +19,38 @@ export class BlogController {
     return this.blogService.getBlogById(id);
   }
 
+   
   @Post('create')
   async createBlog(@Body() createBlogDto: CreateBlogDto): Promise<IBlog> {
     return this.blogService.createBlog(createBlogDto);
   }
+ 
+  
+  @Post('create-with-image')
+  @UseInterceptors(FileInterceptor('image'))
+  async createBlogImage(
+    @Body() createBlogDto: CreateBlogDto,
+    @UploadedFile() image: Multer.File,
+  ): Promise<IBlog> {
+    // Access the raw data from the request body
+    const { category, title, description, content, blog_date, meta_title, meta_desc, meta_keyword } = createBlogDto;
+
+    // Create a new blog post with the raw data and the image filename
+    const newBlog: CreateBlogDto = {
+      category,
+      title,
+      description,
+      content,
+      blog_date,
+      meta_title,
+      meta_desc,
+      meta_keyword,
+      image: image?.filename,
+    };
+
+    return this.blogService.createBlog(newBlog);
+  }
+
 
   @Put('updatebyid/:id')
   async updateBlog(

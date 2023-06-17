@@ -28,4 +28,6 @@ meta_desc: string;
 @IsString()
 meta_keyword: string;
 
+@IsString()
+image: string;
 }
